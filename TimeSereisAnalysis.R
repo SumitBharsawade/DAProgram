@@ -1,0 +1,21 @@
+ts <- read.csv(file.choose(), stringsAsFactors = TRUE)
+#ts
+View(ts)
+start(ts$Datetime)
+end(ts$Datetime)
+frequency(ts$ID)
+frequency(ts$Datetime)
+summary(ts)
+library(forecast)
+model<-auto.arima(ts$Datetime)
+model
+attributes(model)
+model$coef
+acf(model$residuals,main='correlgram')
+pacf(model$residuals,main='correlgram')
+Box.test(model$residuals,lag = 20,type = 'Box-Pierce')
+hist(model$residuals,col = 'red',xlab = 'error',freq = FALSE,main='histogram of residuals')
+f<-forecast(model,48)
+library(ggplot2)
+autoplot(f)
+accuracy(f)
